@@ -19,7 +19,7 @@ frappe.pages['Email Inbox'].on_page_load = function(wrapper) {
 	});
 }
 
-frappe.breadcrumbs.add("Setup");
+//frappe.breadcrumbs.add("Setup");
 
 frappe.pages['Email Inbox'].refresh = function(wrapper) {
 	if (wrapper.inbox) {
@@ -129,7 +129,7 @@ frappe.Inbox = frappe.ui.Listing.extend({
 						me.toggle_actions();
 						me.filter_list.default_filters=[["Communication", "communication_type", "=", "Communication"],["Communication", "email_account", "in", me.account],["Communication", "deleted", "=", 0]]
 						me.filter_list.clear_filters()
-						me.filter_list.reload_stats();
+						//me.filter_list.reload_stats();
 						me.refresh();
 					});
 	
@@ -146,7 +146,7 @@ frappe.Inbox = frappe.ui.Listing.extend({
 						me.toggle_actions();
 						me.filter_list.default_filters=[["Communication", "communication_type", "=", "Communication"],["Communication", "email_account", "in", me.account],["Communication", "deleted", "=", 0]]
 						me.filter_list.clear_filters()
-						me.filter_list.reload_stats();
+						//me.filter_list.reload_stats();
 						me.refresh();
 					});
 					me.wrapper.page.sidebar.removeClass("col-md-2").addClass("col-md-1").width('0%');
@@ -216,7 +216,7 @@ frappe.Inbox = frappe.ui.Listing.extend({
 	update_footer:function(){
 		var me = this;
 		//default filter used for filters
-		var filters = me.filter_list.get_filters().concat(me.filter_list.default_filters)
+		var filters = me.filter_list.get_filters()//.concat(me.filter_list.default_filters)
 		return frappe.call({
 			method: me.method || 'frappe.desk.query_builder.runquery',
 			type: "GET",
@@ -246,17 +246,18 @@ frappe.Inbox = frappe.ui.Listing.extend({
 		var me = this;
 		var fields = [{
 				"fieldtype": "Heading",
-				"label": __("Create new Contact for a Customer or Supplier to Match"),
+				"label": __("Create new Contact to Match Email Address"),
 				"fieldname": "Option1"
 				},
 				{
 					"fieldtype": "Button",
 					"label": __("Create new Contact"),
-					"fieldname":"newcontact"
+					"fieldname":"newcontact",
+					"description": __("Create new Contact for a Customer, Supplier, User or Organisation to Match")
 				},
 				{
 				"fieldtype": "Heading",
-				"label": __("Replace Email on Contact"),
+				"label": __("Replace Email Address on Contact"),
 				"fieldname": "Option2"
 				},
 				{
@@ -278,7 +279,7 @@ frappe.Inbox = frappe.ui.Listing.extend({
 				})
 		}
 		var d = new frappe.ui.Dialog ({
-			title: __("Match emails to a Company"),
+			title: __("Match Emails to a Company"),
 			fields: fields
 		});
 		d.get_input("newcontact").on("click", function (frm) {
